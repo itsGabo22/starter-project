@@ -46,6 +46,19 @@ class JournalistArticleModel extends JournalistArticleEntity {
       metrics: entity.metrics != null ? JournalistMetricsModel.fromEntity(entity.metrics!) : null,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'content': content,
+      'author': author != null ? (author as JournalistAuthorModel).toJson() : null,
+      'media': media != null ? (media as JournalistMediaModel).toJson() : null,
+      'metadata': metadata != null ? (metadata as JournalistMetadataModel).toJson() : null,
+      'ai_enhancements': aiEnhancements != null ? (aiEnhancements as JournalistAiEnhancementsModel).toJson() : null,
+      'metrics': metrics != null ? (metrics as JournalistMetricsModel).toJson() : null,
+    };
+  }
 }
 
 class JournalistAuthorModel extends JournalistAuthorEntity {
@@ -53,6 +66,8 @@ class JournalistAuthorModel extends JournalistAuthorEntity {
 
   factory JournalistAuthorModel.fromJson(Map<String, dynamic> json) => JournalistAuthorModel(uid: json['uid'], name: json['name'], avatarUrl: json['avatarUrl']);
   factory JournalistAuthorModel.fromEntity(JournalistAuthorEntity entity) => JournalistAuthorModel(uid: entity.uid, name: entity.name, avatarUrl: entity.avatarUrl);
+  
+  Map<String, dynamic> toJson() => {'uid': uid, 'name': name, 'avatarUrl': avatarUrl};
 }
 
 class JournalistMediaModel extends JournalistMediaEntity {
@@ -60,6 +75,8 @@ class JournalistMediaModel extends JournalistMediaEntity {
 
   factory JournalistMediaModel.fromJson(Map<String, dynamic> json) => JournalistMediaModel(thumbnailURL: json['thumbnailURL']);
   factory JournalistMediaModel.fromEntity(JournalistMediaEntity entity) => JournalistMediaModel(thumbnailURL: entity.thumbnailURL);
+
+  Map<String, dynamic> toJson() => {'thumbnailURL': thumbnailURL};
 }
 
 class JournalistMetadataModel extends JournalistMetadataEntity {
@@ -79,6 +96,13 @@ class JournalistMetadataModel extends JournalistMetadataEntity {
         updatedAt: entity.updatedAt,
         publishedAt: entity.publishedAt,
       );
+
+  Map<String, dynamic> toJson() => {
+        'status': status,
+        'createdAt': createdAt?.toIso8601String(),
+        'updatedAt': updatedAt?.toIso8601String(),
+        'publishedAt': publishedAt?.toIso8601String(),
+      };
 }
 
 class JournalistAiEnhancementsModel extends JournalistAiEnhancementsEntity {
@@ -96,6 +120,12 @@ class JournalistAiEnhancementsModel extends JournalistAiEnhancementsEntity {
         tags: entity.tags,
         estimatedReadTime: entity.estimatedReadTime,
       );
+
+  Map<String, dynamic> toJson() => {
+        'aiSummary': aiSummary,
+        'tags': tags,
+        'estimatedReadTime': estimatedReadTime,
+      };
 }
 
 class JournalistMetricsModel extends JournalistMetricsEntity {
@@ -103,4 +133,6 @@ class JournalistMetricsModel extends JournalistMetricsEntity {
 
   factory JournalistMetricsModel.fromJson(Map<String, dynamic> json) => JournalistMetricsModel(views: json['views'], likes: json['likes']);
   factory JournalistMetricsModel.fromEntity(JournalistMetricsEntity entity) => JournalistMetricsModel(views: entity.views, likes: entity.likes);
+
+  Map<String, dynamic> toJson() => {'views': views, 'likes': likes};
 }

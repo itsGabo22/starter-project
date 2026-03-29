@@ -88,7 +88,7 @@ class JournalistArticleWidget extends StatelessWidget {
             const SizedBox(height: 5),
             // Title
             Text(
-              article!.title ?? '',
+              (article!.title?.isNotEmpty == true) ? article!.title! : 'Untitled Article',
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

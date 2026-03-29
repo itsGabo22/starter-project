@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../domain/entities/journalist_article.dart';
-import '../../domain/usecases/generate_ai_metadata_usecase.dart';
-import '../../domain/usecases/save_article_usecase.dart';
+import '../../domain/use_cases/generate_ai_metadata_usecase.dart';
+import '../../domain/use_cases/save_article_usecase.dart';
 import 'journalist_editor_state.dart';
 
 class JournalistEditorCubit extends Cubit<JournalistEditorState> {
