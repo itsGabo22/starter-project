@@ -3,10 +3,10 @@ import '../../../../core/usecase/usecase.dart';
 import '../entities/journalist_article.dart';
 import '../repository/journalist_repository.dart';
 
-class SaveArticleUseCase implements UseCase<DataState<void>, JournalistArticleEntity> {
+class SaveArticleUseCaseJournalist implements UseCase<DataState<void>, JournalistArticleEntity> {
   final JournalistRepository _journalistRepository;
 
-  SaveArticleUseCase(this._journalistRepository);
+  SaveArticleUseCaseJournalist(this._journalistRepository);
 
   @override
   Future<DataState<void>> call({JournalistArticleEntity? params}) {
