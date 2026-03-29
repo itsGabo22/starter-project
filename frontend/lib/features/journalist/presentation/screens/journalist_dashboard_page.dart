@@ -69,7 +69,10 @@ class JournalistDashboardPage extends StatelessWidget {
     );
   }
 
-  void _onEditArticlePressed(BuildContext context, {JournalistArticleEntity? article}) {
-    Navigator.pushNamed(context, '/JournalistEditor', arguments: article);
+  void _onEditArticlePressed(BuildContext context, {JournalistArticleEntity? article}) async {
+    await Navigator.pushNamed(context, '/JournalistEditor', arguments: article);
+    if (context.mounted) {
+      context.read<JournalistArticlesCubit>().getArticles();
+    }
   }
 }
