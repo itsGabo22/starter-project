@@ -4,6 +4,9 @@ import '../../features/daily_news/domain/entities/article.dart';
 import '../../features/daily_news/presentation/pages/article_detail/article_detail.dart';
 import '../../features/daily_news/presentation/pages/home/daily_news.dart';
 import '../../features/daily_news/presentation/pages/saved_article/saved_article.dart';
+import '../../features/journalist/presentation/pages/journalist_dashboard_page.dart';
+import '../../features/journalist/presentation/pages/journalist_editor_page.dart';
+import '../../features/journalist/domain/entities/journalist_article.dart';
 
 
 class AppRoutes {
@@ -17,7 +20,13 @@ class AppRoutes {
 
       case '/SavedArticles':
         return _materialRoute(const SavedArticles());
-        
+
+      case '/JournalistDashboard':
+        return _materialRoute(const JournalistDashboardPage());
+
+      case '/JournalistEditor':
+        return _materialRoute(JournalistEditorPage(article: settings.arguments as JournalistArticleEntity?));
+
       default:
         return _materialRoute(const DailyNews());
     }

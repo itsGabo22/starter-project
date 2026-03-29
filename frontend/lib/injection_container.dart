@@ -11,6 +11,15 @@ import 'features/daily_news/domain/usecases/remove_article.dart';
 import 'features/daily_news/domain/usecases/save_article.dart';
 import 'features/daily_news/presentation/bloc/article/local/local_article_bloc.dart';
 
+// Journalist Feature
+import 'features/journalist/data/repository/mock_journalist_repository_impl.dart';
+import 'features/journalist/domain/repository/journalist_repository.dart';
+import 'features/journalist/domain/usecases/generate_ai_metadata_usecase.dart';
+import 'features/journalist/domain/usecases/get_articles_usecase.dart';
+import 'features/journalist/domain/usecases/save_article_usecase.dart';
+import 'features/journalist/presentation/bloc/journalist_articles_cubit.dart';
+import 'features/journalist/presentation/bloc/journalist_editor_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
@@ -26,6 +35,10 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<ArticleRepository>(
     ArticleRepositoryImpl(sl(),sl())
+  );
+
+  sl.registerSingleton<JournalistRepository>(
+      MockJournalistRepositoryImpl()
   );
   
   //UseCases
@@ -45,6 +58,18 @@ Future<void> initializeDependencies() async {
     RemoveArticleUseCase(sl())
   );
 
+  sl.registerSingleton<GetArticlesUseCase>(
+      GetArticlesUseCase(sl())
+  );
+
+  sl.registerSingleton<SaveArticleUseCaseJournalist>(
+      SaveArticleUseCaseJournalist(sl())
+  );
+
+  sl.registerSingleton<GenerateAiMetadataUseCase>(
+      GenerateAiMetadataUseCase(sl())
+  );
+
 
   //Blocs
   sl.registerFactory<RemoteArticlesBloc>(
@@ -53,6 +78,14 @@ Future<void> initializeDependencies() async {
 
   sl.registerFactory<LocalArticleBloc>(
     ()=> LocalArticleBloc(sl(),sl(),sl())
+  );
+
+  sl.registerFactory<JournalistArticlesCubit>(
+      () => JournalistArticlesCubit(sl())
+  );
+
+  sl.registerFactory<JournalistEditorCubit>(
+      () => JournalistEditorCubit(sl(), sl())
   );
 
 
