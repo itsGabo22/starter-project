@@ -17,9 +17,11 @@ class JournalistDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<JournalistArticlesCubit>(
       create: (context) => sl<JournalistArticlesCubit>()..getArticles(),
-      child: Scaffold(
-        body: _buildBody(),
-        floatingActionButton: _buildPremiumFAB(context),
+      child: Builder(
+        builder: (context) => Scaffold(
+          body: _buildBody(),
+          floatingActionButton: _buildPremiumFAB(context),
+        ),
       ),
     );
   }
