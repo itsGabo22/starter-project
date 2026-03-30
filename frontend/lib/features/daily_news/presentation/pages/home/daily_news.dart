@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_state.dart';
 
+import 'package:news_app_clean_architecture/config/theme/app_themes.dart';
+import 'package:news_app_clean_architecture/config/theme/bloc/theme_cubit.dart';
 import '../../../domain/entities/article.dart';
 import '../../widgets/article_tile.dart';
 
@@ -16,17 +18,39 @@ class DailyNews extends StatelessWidget {
   }
 
   _buildAppbar(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
-      title: const Text(
+      title: Text(
         'Daily News',
-        style: TextStyle(color: Colors.black),
+        style: theme.appBarTheme.titleTextStyle,
       ),
       actions: [
+        // ── Theme toggle ──
+        BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, themeState) {
+            return IconButton(
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 350),
+                transitionBuilder: (child, anim) =>
+                    RotationTransition(turns: anim, child: child),
+                child: Icon(
+                  themeState.themeMode == ThemeMode.dark
+                      ? Icons.light_mode_rounded
+                      : Icons.dark_mode_rounded,
+                  key: ValueKey(themeState.themeMode),
+                  color: AppColors.warning,
+                ),
+              ),
+              onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+            );
+          },
+        ),
         GestureDetector(
           onTap: () => _onShowSavedArticlesViewTapped(context),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14),
-            child: Icon(Icons.bookmark, color: Colors.black),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Icon(Icons.bookmark,
+                color: theme.appBarTheme.iconTheme?.color),
           ),
         ),
       ],
@@ -69,11 +93,26 @@ class DailyNews extends StatelessWidget {
       body: ListView(
         children: articleWidgets,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/JournalistDashboard');
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: AppColors.fabGradient,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.accent.withOpacity(0.4),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/JournalistDashboard');
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Icons.edit_note_rounded, color: Colors.white),
+        ),
       ),
     );
   }
