@@ -25,6 +25,12 @@ class AppColors {
   static const warning = Color(0xFFF59E0B);       // Amber – drafts
   static const success = Color(0xFF10B981);       // Green – published
   static const error = Color(0xFFEF4444);
+  
+  // ── Newspaper Mode ──
+  static const newspaperScaffold = Color(0xFFF4F1EA);
+  static const newspaperTextPrimary = Color(0xFF1A1A1A);
+  static const newspaperTextSecondary = Color(0xFF4A4A4A);
+  static const newspaperAccent = Color(0xFF704214);
 
   // ── Gradients ──
   static const fabGradient = LinearGradient(
@@ -98,6 +104,55 @@ ThemeData darkTheme() {
       labelStyle: const TextStyle(color: AppColors.accentLight, fontSize: 12, fontWeight: FontWeight.w600),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       side: BorderSide.none,
+    ),
+  );
+}
+
+/// Newspaper (Classic) theme definition.
+ThemeData newspaperTheme() {
+  return ThemeData(
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: AppColors.newspaperScaffold,
+    fontFamily: 'Serif',
+    colorScheme: const ColorScheme.light(
+      primary: AppColors.newspaperAccent,
+      secondary: AppColors.newspaperAccent,
+      surface: AppColors.newspaperScaffold,
+      error: AppColors.error,
+    ),
+    cardColor: AppColors.newspaperScaffold,
+    dividerColor: AppColors.newspaperTextSecondary.withOpacity(0.2),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.newspaperScaffold,
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: AppColors.newspaperTextPrimary),
+      titleTextStyle: TextStyle(
+        color: AppColors.newspaperTextPrimary,
+        fontSize: 22,
+        fontWeight: FontWeight.w800,
+        fontFamily: 'Serif',
+      ),
+    ),
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppColors.newspaperTextPrimary, fontFamily: 'Serif', letterSpacing: -1.0, height: 1.1),
+      headlineMedium: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: AppColors.newspaperTextPrimary, fontFamily: 'Serif', height: 1.1),
+      titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.newspaperTextPrimary, fontFamily: 'Serif', height: 1.2),
+      titleMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.newspaperTextPrimary, fontFamily: 'Serif', height: 1.2),
+      bodyLarge: TextStyle(fontSize: 18, color: AppColors.newspaperTextPrimary, fontFamily: 'Serif', height: 1.6),
+      bodyMedium: TextStyle(fontSize: 16, color: AppColors.newspaperTextSecondary, fontFamily: 'Serif', height: 1.6),
+      labelSmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: AppColors.newspaperTextSecondary, fontFamily: 'Serif'),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.transparent,
+      labelStyle: const TextStyle(color: AppColors.newspaperTextPrimary, fontSize: 10, fontWeight: FontWeight.w900, fontFamily: 'Serif'),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      side: const BorderSide(color: AppColors.newspaperTextPrimary, width: 1.5),
+    ),
+    // Use the explicit Data class if the combined class is causing issues
+    cardTheme: const CardThemeData(
+      shadowColor: Colors.transparent,
+      elevation: 0,
     ),
   );
 }

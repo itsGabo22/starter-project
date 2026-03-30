@@ -45,15 +45,19 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
+          final currentTheme = themeState.themeMode == AppThemeMode.dark
+              ? darkTheme()
+              : (themeState.themeMode == AppThemeMode.newspaper
+                  ? newspaperTheme()
+                  : lightTheme());
+
           return AnimatedTheme(
-            data: themeState.themeMode == ThemeMode.dark ? darkTheme() : lightTheme(),
-            duration: const Duration(milliseconds: 350),
-            curve: Curves.easeInOut,
+            data: currentTheme,
+            duration: const Duration(milliseconds: 450),
+            curve: Curves.easeInOutCubic,
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: lightTheme(),
-              darkTheme: darkTheme(),
-              themeMode: themeState.themeMode,
+              theme: currentTheme,
               onGenerateRoute: AppRoutes.onGenerateRoutes,
               home: const DailyNews(),
             ),
