@@ -72,3 +72,4 @@ Future<void> _onGetSavedArticles(GetSavedArticles event, Emitter<LocalArticleSta
     emit(const LocalArticlesError(message: "Unable to load saved articles at this time."));
   }
 }
+```
