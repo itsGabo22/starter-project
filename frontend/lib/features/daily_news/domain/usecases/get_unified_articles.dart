@@ -28,7 +28,7 @@ class GetUnifiedArticlesUseCase implements UseCase<DataState<List<ArticleEntity>
                 author: a.author?.name ?? 'Symmetry Journalist',
                 title: a.title,
                 description: a.aiEnhancements?.aiSummary ?? a.content,
-                url: "", // No external URL for original content
+                url: "journalist://${a.author?.uid ?? 'global'}/${a.id}", // Unique internal URL
                 urlToImage: a.media?.thumbnailURL,
                 publishedAt: a.metadata?.publishedAt?.toIso8601String(),
                 content: a.content,
