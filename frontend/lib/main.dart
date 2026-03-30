@@ -6,6 +6,7 @@ import 'package:news_app_clean_architecture/config/routes/routes.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/pages/home/daily_news.dart';
 import 'config/theme/app_themes.dart';
+import 'config/theme/bloc/theme_cubit.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'injection_container.dart';
 
@@ -33,13 +34,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RemoteArticlesBloc>(
-      create: (context) => sl()..add(const GetArticles()),
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: theme(),
-          onGenerateRoute: AppRoutes.onGenerateRoutes,
-          home: const DailyNews()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<RemoteArticlesBloc>(
+          create: (context) => sl()..add(const GetArticles()),
+        ),
+        BlocProvider<ThemeCubit>(
+          create: (context) => ThemeCubit(),
+        ),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, themeState) {
+          return AnimatedTheme(
+            data: themeState.themeMode == ThemeMode.dark ? darkTheme() : lightTheme(),
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.easeInOut,
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: lightTheme(),
+              darkTheme: darkTheme(),
+              themeMode: themeState.themeMode,
+              onGenerateRoute: AppRoutes.onGenerateRoutes,
+              home: const DailyNews(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

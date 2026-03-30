@@ -48,6 +48,12 @@ dependencies:
   cached_network_image: ^3.2.0
   sqflite_common_ffi_web: ^0.4.5+4
 
+  #shimmer skeleton loading
+  shimmer: ^3.0.0
+
+  #http client
+  dio: ^5.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
