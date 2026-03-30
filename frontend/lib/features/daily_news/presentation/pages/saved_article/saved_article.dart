@@ -11,51 +11,54 @@ import '../../bloc/article/local/local_article_state.dart';
 import '../../widgets/article_tile.dart';
 
 class SavedArticles extends HookWidget {
-  const SavedArticles({Key ? key}) : super(key: key);
+  const SavedArticles({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<LocalArticleBloc>()..add(const GetSavedArticles()),
       child: Scaffold(
-        appBar: _buildAppBar(),
-        body: _buildBody(),
+        appBar: _buildAppBar(context),
+        body: _buildBody(context),
       ),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
       leading: Builder(
         builder: (context) => GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => _onBackButtonTapped(context),
-          child: const Icon(Ionicons.chevron_back, color: Colors.black),
+          child: Icon(Ionicons.chevron_back,
+              color: theme.appBarTheme.iconTheme?.color),
         ),
       ),
-      title: const Text('Saved Articles', style: TextStyle(color: Colors.black)),
+      title: Text('Saved Articles', style: theme.appBarTheme.titleTextStyle),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return BlocBuilder<LocalArticleBloc, LocalArticlesState>(
       builder: (context, state) {
         if (state is LocalArticlesLoading) {
           return const Center(child: CupertinoActivityIndicator());
         } else if (state is LocalArticlesDone) {
-          return _buildArticlesList(state.articles!);
+          return _buildArticlesList(context, state.articles!);
         }
         return Container();
       },
     );
   }
 
-  Widget _buildArticlesList(List<ArticleEntity> articles) {
+  Widget _buildArticlesList(BuildContext context, List<ArticleEntity> articles) {
+    final theme = Theme.of(context);
     if (articles.isEmpty) {
-      return const Center(
+      return Center(
           child: Text(
-        'NO SAVED ARTICLES',
-        style: TextStyle(color: Colors.black),
+        'No saved articles yet',
+        style: theme.textTheme.bodyMedium,
       ));
     }
 
