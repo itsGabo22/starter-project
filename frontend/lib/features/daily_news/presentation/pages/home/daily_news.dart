@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
+import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_state.dart';
 
 import 'package:news_app_clean_architecture/config/theme/app_themes.dart';
@@ -120,8 +121,14 @@ class DailyNews extends StatelessWidget {
 
     return Scaffold(
       appBar: _buildAppbar(context),
-      body: ListView(
-        children: articleWidgets,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<RemoteArticlesBloc>().add(const GetArticles());
+        },
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: articleWidgets,
+        ),
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
