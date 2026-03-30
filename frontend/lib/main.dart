@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_clean_architecture/config/routes/routes.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
@@ -9,6 +11,18 @@ import 'injection_container.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Injecting dummy options to bypass Windows native file requirement for Emulators
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'dummy-api-key-for-emulators',
+      appId: '1:123:web:123',
+      messagingSenderId: '1234567890',
+      projectId: 'symmetry-journalist-gabo',
+    ),
+  );
+  FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
+  
   await initializeDependencies();
 
   runApp(const MyApp());

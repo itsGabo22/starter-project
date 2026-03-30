@@ -3,7 +3,9 @@ In this folder are all the [Firebase Firestore](https://firebase.google.com/docs
 You will use this folder to add the schema of the *Articles* you want to upload for the app and to add the rules that enforce this schema. 
 
 ## DB Schema
-**TODO: ADD YOUR DB SCHEMA (SCHEMA FOR "ARTICLES" AND ANY OTHER SCHEMAS) HERE**
+The comprehensive database schema for the `articles` collection, including design decisions and AI-enhancement structures, has been documented in a dedicated file to maintain a clean root README. 
+
+👉 **[View the complete Article Schema here](./docs/DB_SCHEMA.md)**
 
 ## Getting Started
 Before starting to work on the backend, you must have a Firebase project with the [Firebase Firestore](https://firebase.google.com/docs/firestore), [Firebase Cloud Storage](https://firebase.google.com/docs/storage) and [Firebase Local Emulator Suite](https://firebase.google.com/docs/emulator-suite) technologies enabled.
