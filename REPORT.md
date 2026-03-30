@@ -28,10 +28,16 @@ Looking forward, the natural evolution of this project is bringing Artificial In
 *(Note for the reviewer: Click the links below to view the application in action).*
 
 * **[Link to Video Demo: Full App Walkthrough & Emulators](https://youtu.be/eja1YGtUgh8)**
-* **Screenshot 1:** ![Dark Mode Feed](https://photos.app.goo.gl/hFMWtwTsqKEScwxJ9)
-* **Screenshot 2:** ![Newspaper Mode Feed](https://photos.app.goo.gl/eL7b8dbNMbxL2Jhh6)
-* **Screenshot 3:** ![Article Detail & Ask AI](https://photos.app.goo.gl/XaxZXEsfpqkaGN786)
-* **Screenshot 4:** ![Saved Articles & UI Stability](https://photos.app.goo.gl/vxq3PXnntZ2YyyTp6)
+* **Screenshot 1:** Dark Mode Feed
+ * ![WhatsApp Image 2026-03-30 at 5 01 37 PM](https://github.com/user-attachments/assets/39767f50-b669-4618-82b8-6ec90ed29529)
+
+* **Screenshot 2:** Newspaper Mode Feed
+* <img width="469" height="882" alt="Captura de pantalla 2026-03-30 165842" src="https://github.com/user-attachments/assets/49c8e87e-24ee-4383-9475-c0200e3d6fdb" />
+* **Screenshot 3:** Article Detail & Ask AI
+*  ![WhatsApp Image 2026-03-30 at 5 03 43 PM](https://github.com/user-attachments/assets/affc6255-c252-4337-b864-b8994afbc0df)
+
+* **Screenshot 4:** Saved Articles & UI Stability
+* ![WhatsApp Image 2026-03-30 at 5 04 57 PM](https://github.com/user-attachments/assets/08822dbc-9735-48f5-8d9d-407c99f0e0ee)
 
 ### 6. Overdelivery
 To embody the core value to *Maximally Overdeliver*, I implemented several enhancements that push the application beyond the initial requirements:

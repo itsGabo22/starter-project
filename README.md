@@ -1,31 +1,56 @@
-# Applicant Showcase App
-Welcome to the repository for our Applicant Showcase App - an application designed for job applicants of Symmetry to showcase their capacity to learn and program good code.
+# 🚀 Symmetry News App: High-Impact Intelligence Suite
+**Developed by Gabriel (Gabo)** — *Applicant Showcase Project*
 
-## Who will see this project?
-This project will be reviewed by senior developers at Symmetry to determine whether your capacities are suited to our fast-paced development environment. 
-We are not looking for MASTERS of their craft, we are looking for people who have the ability to learn extremely quickly and adapt to an ever-changing environment where the ability to improve is a requirement.
-That being said, this project may also be used simply to learn [Flutter](https://docs.flutter.dev/) or to create a project of your own which you can showcase to employers in the future (you are completely welcome to use this project to showcase your skills to employers).
-However, we will only review your project if you are applying for a Programming Job at Symmetry so the question remains: how will we judge your work?
+Welcome to the **Symmetry** era of news reporting. This application transforms a standard news reader into a production-grade intelligence platform, featuring a dual-persona design (NPC vs. Abuela) and a robust data orchestration layer.
 
-## To what standards will we judge your work?
-We will judge your work by:
-- The quality of your code
-- Your experience - we do not expect the same from a programmer with 1 year of experience and a programmer with 5 years of experience
-- The extent to which your project implements the specified functionality (or exceeds it...)
-- Your alignment with Symmetry's 3 core values:
-  - Truth is King
-    - You must search the truth without regards to other people's opinions or supposed knowledge. If you believe something is the truth, help other people understand your point of view regardless of their position. This could mean changing the design prototypes to something you like more or using a backend framework you consider superior to Firebase (obviously explaining your decision) if you believe that this will bring a better project to life.
-  - Total Accountability 
-    - You must always reponsible for your actions and outcomes; this means you are responsible for your happiness and for the quality of your work.
-  - Maximally Overdeliver
-    - You must always give the people more than what they expect from you. You must always rise to the occasion. This could mean you will add more functionality we did not tell you to add or designed new prototypes or came up with ideas on how to improve the project
+---
 
-We know these are high standards, but our company isn't built for the ordinary; it's crafted for the exceptional. 
-We're not seeking your average Joe; we're on the hunt for authentic beasts, the driving force behind societal evolution.
-Symmetry IS the new generation. We will empower the relentless pursuit of innovation and excellence. 
-If you're ready to unleash your potential and shape the future, show it in this project, and... welcome home.
+## 🏎️ One-Click Initialization (Setup)
+To experience the project in its full stable state, follow these steps:
 
-*Note: You might take the third value as a hint to add more functionality and prototypes we did not suggest...*
+1.  **Environment:** Ensure you have the **Flutter SDK (3.0.0+)** and **Firebase CLI** installed.
+2.  **Dependencies:**
+    ```powershell
+    cd frontend
+    flutter pub get
+    ```
+3.  **Backend Services (Crucial for Journalist Mode):** In a separate terminal, start the Firebase Emulators:
+    ```powershell
+    # Root directory
+    firebase emulators:start
+    ```
+4.  **Run the App:**
+    ```powershell
+    # Frontend directory
+    flutter run 
+    or
+    flutter run -d windows
+    ```
+
+---
+
+## ✨ Solution Highlights (Maximally Overdeliver)
+- **Newspaper Mode (Generational UX):** A specialized theme for high accessibility, featuring a cream-broadsheet aesthetic and grayscale image filtering for reduced cognitive load.
+- **Symmetric Exclusive Tags:** An internal journalist feed synced via Firestore, visually distinguished with "Exclusive ⚡" badges.
+- **Unified Data Orchestration:** A single clean architecture UseCase that merges NewsAPI and Firestore streams into a prioritized chronological feed.
+- **Ask Symmetry AI (Prototype):** A high-fidelity conceptual interface for an article-grounded LLM oracle (See Phase 5 in the Roadmap).
+
+---
+
+## 🛠️ Technical FAQ (Symmetry Standards)
+
+### Q: Why does GitHub report JavaScript usage?
+**A:** The JavaScript presence originates from the `web/` folder (Service Workers and Flutter Web entry points) and Firebase configuration files. The **100% of the core business logic is written in Dart**.
+
+### Q: Is it fully functional on Mobile?
+**A:** Yes. The architecture is mobile-native (`sqflite`, `bloc`, `dio`). However, to run on a physical device, you must download your specific `google-services.json` (Android) from the Firebase Console. For this showcase, we've optimized the experience for **Windows Desktop** development and testing.
+
+---
+
+[Old Instructions listed below...](#original-instructions)
+
+<a name="original-instructions"></a>
+[Original Instructions listed below...]
 
 
 Now, let us start with the instructions...
