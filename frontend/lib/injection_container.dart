@@ -23,6 +23,8 @@ import 'features/journalist/domain/use_cases/save_article_usecase.dart';
 import 'features/journalist/presentation/bloc/journalist_articles_cubit.dart';
 import 'features/journalist/presentation/bloc/journalist_editor_cubit.dart';
 
+import 'features/daily_news/domain/usecases/get_unified_articles.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
@@ -56,6 +58,10 @@ Future<void> initializeDependencies() async {
   //UseCases
   sl.registerSingleton<GetArticleUseCase>(
     GetArticleUseCase(sl())
+  );
+
+  sl.registerSingleton<GetUnifiedArticlesUseCase>(
+    GetUnifiedArticlesUseCase(sl(), sl())
   );
 
   sl.registerSingleton<GetSavedArticleUseCase>(

@@ -25,23 +25,53 @@ class DailyNews extends StatelessWidget {
         style: theme.appBarTheme.titleTextStyle,
       ),
       actions: [
-        // ── Theme toggle ──
+        // ── Theme selection menu ──
         BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, themeState) {
-            return IconButton(
-              icon: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 350),
-                transitionBuilder: (child, anim) =>
-                    RotationTransition(turns: anim, child: child),
-                child: Icon(
-                  themeState.themeMode == ThemeMode.dark
-                      ? Icons.light_mode_rounded
-                      : Icons.dark_mode_rounded,
-                  key: ValueKey(themeState.themeMode),
-                  color: AppColors.warning,
-                ),
+            return PopupMenuButton<AppThemeMode>(
+              icon: Icon(
+                themeState.themeMode == AppThemeMode.dark
+                    ? Icons.dark_mode_rounded
+                    : (themeState.themeMode == AppThemeMode.newspaper
+                        ? Icons.menu_book_rounded
+                        : Icons.light_mode_rounded),
+                color: themeState.themeMode == AppThemeMode.newspaper 
+                    ? AppColors.newspaperAccent 
+                    : AppColors.warning,
               ),
-              onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+              onSelected: (mode) => context.read<ThemeCubit>().setTheme(mode),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: AppThemeMode.light,
+                  child: Row(
+                    children: [
+                      Icon(Icons.light_mode_rounded, size: 20),
+                      SizedBox(width: 12),
+                      Text('Light Mode'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: AppThemeMode.dark,
+                  child: Row(
+                    children: [
+                      Icon(Icons.dark_mode_rounded, size: 20),
+                      SizedBox(width: 12),
+                      Text('Dark Mode'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: AppThemeMode.newspaper,
+                  child: Row(
+                    children: [
+                      Icon(Icons.menu_book_rounded, size: 20),
+                      SizedBox(width: 12),
+                      Text('Newspaper Mode (Classic)'),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),

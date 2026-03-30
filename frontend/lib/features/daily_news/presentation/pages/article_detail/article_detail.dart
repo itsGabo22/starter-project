@@ -60,7 +60,7 @@ class ArticleDetailsView extends HookWidget {
         children: [
           // Title
           Text(
-            article!.title!,
+            article?.title ?? '',
             style: theme.textTheme.headlineMedium,
           ),
 
@@ -72,7 +72,7 @@ class ArticleDetailsView extends HookWidget {
                   color: theme.textTheme.bodyMedium?.color),
               const SizedBox(width: 4),
               Text(
-                article!.publishedAt!,
+                article?.publishedAt ?? '',
                 style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12),
               ),
             ],
@@ -88,7 +88,7 @@ class ArticleDetailsView extends HookWidget {
       height: 250,
       margin: const EdgeInsets.only(top: 14),
       child: Image.network(
-        article!.urlToImage ?? '',
+        article?.urlToImage ?? '',
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => Container(
           decoration: const BoxDecoration(gradient: AppColors.heroGradient),
@@ -105,7 +105,7 @@ class ArticleDetailsView extends HookWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
       child: Text(
-        '${article!.description ?? ''}\n\n${article!.content ?? ''}',
+        '${article?.description ?? ''}\n\n${article?.content ?? ''}',
         style: theme.textTheme.bodyLarge,
       ),
     );
@@ -140,7 +140,9 @@ class ArticleDetailsView extends HookWidget {
   }
 
   void _onFloatingActionButtonPressed(BuildContext context) {
-    BlocProvider.of<LocalArticleBloc>(context).add(SaveArticle(article!));
+    if (article != null) {
+      BlocProvider.of<LocalArticleBloc>(context).add(SaveArticle(article!));
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Row(

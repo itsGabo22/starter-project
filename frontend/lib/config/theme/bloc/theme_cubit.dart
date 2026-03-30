@@ -1,23 +1,32 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Holds the current ThemeMode.
+enum AppThemeMode { light, dark, newspaper }
+
+/// Holds the current AppThemeMode.
 class ThemeState {
-  final ThemeMode themeMode;
+  final AppThemeMode themeMode;
   const ThemeState(this.themeMode);
 }
 
-/// Global Cubit that manages light / dark theme.
+/// Global Cubit that manages light / dark / newspaper theme.
 /// Placed in config/theme/bloc/ so it is NOT coupled to any feature.
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(const ThemeState(ThemeMode.dark)); // default = dark
+  ThemeCubit() : super(const ThemeState(AppThemeMode.dark)); // default = dark
 
-  void toggleTheme() {
-    final next = state.themeMode == ThemeMode.dark
-        ? ThemeMode.light
-        : ThemeMode.dark;
-    emit(ThemeState(next));
+  void setTheme(AppThemeMode mode) {
+    emit(ThemeState(mode));
   }
 
-  bool get isDark => state.themeMode == ThemeMode.dark;
+  void toggleTheme() {
+    if (state.themeMode == AppThemeMode.dark) {
+      setTheme(AppThemeMode.light);
+    } else if (state.themeMode == AppThemeMode.light) {
+      setTheme(AppThemeMode.newspaper);
+    } else {
+      setTheme(AppThemeMode.dark);
+    }
+  }
+
+  bool get isDark => state.themeMode == AppThemeMode.dark;
+  bool get isNewspaper => state.themeMode == AppThemeMode.newspaper;
 }
