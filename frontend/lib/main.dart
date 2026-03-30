@@ -22,7 +22,14 @@ Future<void> main() async {
       projectId: 'symmetry-journalist-gabo',
     ),
   );
-  FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
+
+  try {
+    // If you run on Windows, 127.0.0.1 is correct. 
+    // If you run on Android Emulator, change this to 10.0.2.2
+    FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
+  } catch (e) {
+    debugPrint("Firestore Emulator already initialized or failed: $e");
+  }
   
   await initializeDependencies();
 

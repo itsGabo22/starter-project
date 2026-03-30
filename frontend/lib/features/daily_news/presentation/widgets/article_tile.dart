@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_clean_architecture/config/theme/app_themes.dart';
+import 'package:news_app_clean_architecture/core/util/reading_time_helper.dart';
 import '../../domain/entities/article.dart';
 
 class ArticleWidget extends StatelessWidget {
@@ -183,7 +184,7 @@ class ArticleWidget extends StatelessWidget {
               ),
             ),
 
-            // Datetime
+            // Datetime & Reading Time
             Row(
               children: [
                 Icon(Icons.access_time_rounded, size: 14,
@@ -191,7 +192,7 @@ class ArticleWidget extends StatelessWidget {
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
-                    article!.publishedAt ?? '',
+                    '${article?.publishedAt ?? ''} · ${ReadingTimeHelper.calculateReadingTime(article?.content)} min read',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(fontSize: 11),

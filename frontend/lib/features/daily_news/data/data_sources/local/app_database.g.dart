@@ -41,6 +41,13 @@ class _$AppDatabaseBuilder {
     return this;
   }
 
+  bool _fallbackToDestructiveMigration = false;
+
+  _$AppDatabaseBuilder fallbackToDestructiveMigration() {
+    _fallbackToDestructiveMigration = true;
+    return this;
+  }
+
   /// Creates the database and initializes it.
   Future<AppDatabase> build() async {
     final path = name != null
@@ -51,6 +58,7 @@ class _$AppDatabaseBuilder {
       path,
       _migrations,
       _callback,
+      _fallbackToDestructiveMigration,
     );
     return database;
   }
@@ -64,9 +72,9 @@ class _$AppDatabase extends AppDatabase {
   ArticleDao? _articleDAOInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
-      [Callback? callback]) async {
+      [Callback? callback, bool fallbackToDestructiveMigration = false]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 2,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -82,12 +90,24 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `article` (`id` INTEGER, `author` TEXT, `title` TEXT, `description` TEXT, `url` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `article` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `author` TEXT, `title` TEXT, `description` TEXT, `url` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT)');
+        await database.execute(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `index_article_url` ON `article` (`url`)');
 
         await callback?.onCreate?.call(database, version);
       },
     );
-    return sqfliteDatabaseFactory.openDatabase(path, options: databaseOptions);
+    try {
+      return await sqfliteDatabaseFactory.openDatabase(path,
+          options: databaseOptions);
+    } catch (e) {
+      if (fallbackToDestructiveMigration) {
+        await sqfliteDatabaseFactory.deleteDatabase(path);
+        return sqfliteDatabaseFactory.openDatabase(path,
+            options: databaseOptions);
+      }
+      rethrow;
+    }
   }
 
   @override
@@ -154,7 +174,7 @@ class _$ArticleDao extends ArticleDao {
   @override
   Future<void> insertArticle(ArticleModel article) async {
     await _articleModelInsertionAdapter.insert(
-        article, OnConflictStrategy.abort);
+        article, OnConflictStrategy.replace);
   }
 
   @override

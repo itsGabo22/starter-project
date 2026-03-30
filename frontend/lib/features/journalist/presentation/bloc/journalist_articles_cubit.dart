@@ -9,17 +9,20 @@ class JournalistArticlesCubit extends Cubit<JournalistArticlesState> {
   JournalistArticlesCubit(this._getArticlesUseCase) : super(const JournalistArticlesLoading());
 
   Future<void> getArticles() async {
-    emit(const JournalistArticlesLoading());
+    try {
+      emit(const JournalistArticlesLoading());
 
-    final dataState = await _getArticlesUseCase();
+      final dataState = await _getArticlesUseCase();
 
-    if (dataState is DataSuccess && dataState.data != null) {
-      emit(JournalistArticlesDone(dataState.data!));
-    }
+      if (dataState is DataSuccess && dataState.data != null) {
+        emit(JournalistArticlesDone(dataState.data!));
+      }
 
-    if (dataState is DataFailed) {
-      // Mapping DioError to nullable Exception or similar
-      emit(JournalistArticlesError(dataState.error as Exception));
+      if (dataState is DataFailed) {
+        emit(JournalistArticlesError(dataState.error as Exception));
+      }
+    } catch (e) {
+      emit(JournalistArticlesError(Exception('Failed to fetch journalist articles: $e')));
     }
   }
 }

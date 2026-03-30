@@ -29,7 +29,7 @@ final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
 
-  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').fallbackToDestructiveMigration().build();
   sl.registerSingleton<AppDatabase>(database);
   
   // Dio & Firebase
