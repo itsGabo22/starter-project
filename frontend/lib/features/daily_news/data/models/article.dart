@@ -2,29 +2,37 @@ import 'package:floor/floor.dart';
 import 'package:news_app_clean_architecture/features/daily_news/domain/entities/article.dart';
 import '../../../../core/constants/constants.dart';
 
-@Entity(tableName: 'article',primaryKeys: ['id'])
+@Entity(
+  tableName: 'article',
+  indices: [
+    Index(value: ['url'], unique: true)
+  ],
+)
 class ArticleModel extends ArticleEntity {
-  const ArticleModel({
-    int ? id,
-    String ? author,
-    String ? title,
-    String ? description,
-    String ? url,
-    String ? urlToImage,
-    String ? publishedAt,
-    String ? content,
-  }): super(
-    id: id,
-    author: author,
-    title: title,
-    description: description,
-    url: url,
-    urlToImage: urlToImage,
-    publishedAt: publishedAt,
-    content: content,
-  );
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
 
-  factory ArticleModel.fromJson(Map < String, dynamic > map) {
+  const ArticleModel({
+    this.id,
+    String? author,
+    String? title,
+    String? description,
+    String? url,
+    String? urlToImage,
+    String? publishedAt,
+    String? content,
+  }) : super(
+          id: id,
+          author: author,
+          title: title,
+          description: description,
+          url: url,
+          urlToImage: urlToImage,
+          publishedAt: publishedAt,
+          content: content,
+        );
+
+  factory ArticleModel.fromJson(Map<String, dynamic> map) {
     return ArticleModel(
       author: map['author'] ?? "",
       title: map['title'] ?? "",
@@ -42,10 +50,10 @@ class ArticleModel extends ArticleEntity {
       author: entity.author,
       title: entity.title,
       description: entity.description,
-      url: entity.url,
+      url: entity.url ?? "",
       urlToImage: entity.urlToImage,
       publishedAt: entity.publishedAt,
-      content: entity.content
+      content: entity.content,
     );
   }
 }
