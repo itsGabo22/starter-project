@@ -25,8 +25,9 @@ class ArticleDetailsView extends HookWidget {
     final theme = Theme.of(context);
 
     // Lift the state up! Create the BLoC once for the lifetime of this screen.
-    final aiChatBloc = useMemoized(() => sl<AiChatBloc>()..add(const AiChatStarted()));
-    
+    final aiChatBloc =
+        useMemoized(() => sl<AiChatBloc>()..add(const AiChatStarted()));
+
     // Ensure we close the BLoC when the screen is disposed to avoid memory leaks.
     useEffect(() {
       return () => aiChatBloc.close();
@@ -96,8 +97,8 @@ class ArticleDetailsView extends HookWidget {
           // DateTime
           Row(
             children: [
-              Icon(Ionicons.time_outline, size: 16,
-                  color: theme.textTheme.bodyMedium?.color),
+              Icon(Ionicons.time_outline,
+                  size: 16, color: theme.textTheme.bodyMedium?.color),
               const SizedBox(width: 4),
               Text(
                 '${article?.publishedAt ?? ''} · ${ReadingTimeHelper.calculateReadingTime(article?.content)} min read',
@@ -140,18 +141,21 @@ class ArticleDetailsView extends HookWidget {
   }
 
   Widget _buildAiAnalysis(ThemeData theme) {
-    final isNewspaper = theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
+    final isNewspaper =
+        theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isNewspaper 
-            ? Colors.transparent 
-            : (isDark ? Colors.white.withOpacity(0.05) : AppColors.accent.withOpacity(0.05)),
+        color: isNewspaper
+            ? Colors.transparent
+            : (isDark
+                ? Colors.white.withOpacity(0.05)
+                : AppColors.accent.withOpacity(0.05)),
         borderRadius: BorderRadius.circular(isNewspaper ? 0 : 20),
-        border: isNewspaper 
+        border: isNewspaper
             ? Border.all(color: theme.dividerColor, width: 1)
             : Border.all(color: AppColors.accent.withOpacity(0.2)),
       ),
@@ -185,7 +189,8 @@ class ArticleDetailsView extends HookWidget {
   }
 
   Widget _buildFloatingActionButtons(ThemeData theme, BuildContext context) {
-    final isNewspaper = theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
+    final isNewspaper =
+        theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -195,15 +200,19 @@ class ArticleDetailsView extends HookWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(isNewspaper ? 12 : 30),
             gradient: isNewspaper ? null : AppColors.fabGradient,
-            color: isNewspaper ? AppColors.newspaperAccent : null,
-            boxShadow: isNewspaper ? null : [
-              BoxShadow(
-                color: AppColors.accent.withOpacity(0.4),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-            border: isNewspaper ? Border.all(color: AppColors.newspaperTextPrimary, width: 1) : null,
+            color: isNewspaper ? const Color.fromARGB(227, 255, 0, 0) : null,
+            boxShadow: isNewspaper
+                ? null
+                : [
+                    BoxShadow(
+                      color: AppColors.accent.withOpacity(0.4),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+            border: isNewspaper
+                ? Border.all(color: AppColors.newspaperTextPrimary, width: 1)
+                : null,
           ),
           child: FloatingActionButton.extended(
             heroTag: 'ask_ai',
@@ -211,7 +220,9 @@ class ArticleDetailsView extends HookWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             icon: const Icon(Icons.auto_awesome, color: Colors.white),
-            label: const Text('Ask AI ✨', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            label: const Text('Ask AI ',
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         ),
         const SizedBox(height: 12),
@@ -220,26 +231,34 @@ class ArticleDetailsView extends HookWidget {
           builder: (context, state) {
             final isLoading = state is LocalArticlesLoading;
             bool isSaved = false;
-            
+
             if (state is LocalArticlesDone) {
-              isSaved = state.articles?.any((a) => a.url == article?.url) ?? false;
+              isSaved =
+                  state.articles?.any((a) => a.url == article?.url) ?? false;
             }
 
             return FloatingActionButton(
               mini: true,
               heroTag: 'bookmark',
-              onPressed: isLoading ? null : () => _onFloatingActionButtonPressed(context, isSaved),
-              backgroundColor: isLoading 
-                  ? Colors.grey 
-                  : (isNewspaper ? AppColors.newspaperScaffold : AppColors.darkSurface),
+              onPressed: isLoading
+                  ? null
+                  : () => _onFloatingActionButtonPressed(context, isSaved),
+              backgroundColor: isLoading
+                  ? Colors.grey
+                  : (isNewspaper
+                      ? AppColors.newspaperScaffold
+                      : AppColors.darkSurface),
               shape: isNewspaper ? const RoundedRectangleBorder() : null,
-              child: isLoading 
-                ? const CupertinoActivityIndicator(radius: 8, color: Colors.white)
-                : Icon(
-                    isSaved ? Ionicons.bookmark : Ionicons.bookmark_outline,
-                    color: isNewspaper ? AppColors.newspaperTextPrimary : Colors.white,
-                    size: 20,
-                  ),
+              child: isLoading
+                  ? const CupertinoActivityIndicator(
+                      radius: 8, color: Colors.white)
+                  : Icon(
+                      isSaved ? Ionicons.bookmark : Ionicons.bookmark_outline,
+                      color: isNewspaper
+                          ? AppColors.newspaperTextPrimary
+                          : Colors.white,
+                      size: 20,
+                    ),
             );
           },
         ),
@@ -271,7 +290,8 @@ class ArticleDetailsView extends HookWidget {
 
   void _onFloatingActionButtonPressed(BuildContext context, bool isSaved) {
     final theme = Theme.of(context);
-    final isNewspaper = theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
+    final isNewspaper =
+        theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
 
     if (isSaved) {
       if (article != null) {
@@ -281,21 +301,28 @@ class ArticleDetailsView extends HookWidget {
         SnackBar(
           content: Row(
             children: [
-              Icon(Icons.bookmark_remove_rounded, 
-                color: isNewspaper ? AppColors.newspaperTextPrimary : Colors.white, 
-                size: 18),
+              Icon(Icons.bookmark_remove_rounded,
+                  color: isNewspaper
+                      ? AppColors.newspaperTextPrimary
+                      : Colors.white,
+                  size: 18),
               const SizedBox(width: 8),
-              Text('Article removed from favorites.',
+              Text(
+                'Article removed from favorites.',
                 style: TextStyle(
-                  color: isNewspaper ? AppColors.newspaperTextPrimary : Colors.white,
+                  color: isNewspaper
+                      ? AppColors.newspaperTextPrimary
+                      : Colors.white,
                   fontFamily: isNewspaper ? 'Serif' : null,
                 ),
               ),
             ],
           ),
-          backgroundColor: isNewspaper ? AppColors.newspaperScaffold : AppColors.error,
+          backgroundColor:
+              isNewspaper ? AppColors.newspaperScaffold : AppColors.error,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(isNewspaper ? 0 : 12)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(isNewspaper ? 0 : 12)),
         ),
       );
       return;
@@ -308,22 +335,27 @@ class ArticleDetailsView extends HookWidget {
       SnackBar(
         content: Row(
           children: [
-            Icon(Icons.bookmark_added, 
-              color: isNewspaper ? AppColors.newspaperTextPrimary : Colors.white, 
-              size: 18),
+            Icon(Icons.bookmark_added,
+                color:
+                    isNewspaper ? AppColors.newspaperTextPrimary : Colors.white,
+                size: 18),
             const SizedBox(width: 8),
-            Text('Article saved successfully.',
+            Text(
+              'Article saved successfully.',
               style: TextStyle(
-                color: isNewspaper ? AppColors.newspaperTextPrimary : Colors.white,
+                color:
+                    isNewspaper ? AppColors.newspaperTextPrimary : Colors.white,
                 fontFamily: isNewspaper ? 'Serif' : null,
                 fontWeight: isNewspaper ? FontWeight.bold : null,
               ),
             ),
           ],
         ),
-        backgroundColor: isNewspaper ? AppColors.newspaperScaffold : AppColors.success,
+        backgroundColor:
+            isNewspaper ? AppColors.newspaperScaffold : AppColors.success,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(isNewspaper ? 0 : 12)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(isNewspaper ? 0 : 12)),
       ),
     );
   }
@@ -340,7 +372,8 @@ class _AiChatSheet extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isNewspaper = theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
+    final isNewspaper =
+        theme.scaffoldBackgroundColor == AppColors.newspaperScaffold;
     final isDark = theme.brightness == Brightness.dark;
 
     final scrollController = useScrollController();
@@ -369,7 +402,8 @@ class _AiChatSheet extends HookWidget {
     }
 
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: isDark ? 10 : 0, sigmaY: isDark ? 10 : 0),
+      filter:
+          ImageFilter.blur(sigmaX: isDark ? 10 : 0, sigmaY: isDark ? 10 : 0),
       child: DraggableScrollableSheet(
         initialChildSize: 0.75,
         minChildSize: 0.5,
@@ -379,7 +413,9 @@ class _AiChatSheet extends HookWidget {
           decoration: BoxDecoration(
             color: isNewspaper
                 ? AppColors.newspaperScaffold
-                : (isDark ? AppColors.darkSurface.withOpacity(0.95) : Colors.white),
+                : (isDark
+                    ? AppColors.darkSurface.withOpacity(0.95)
+                    : Colors.white),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(isNewspaper ? 0 : 30),
               topRight: Radius.circular(isNewspaper ? 0 : 30),
@@ -407,13 +443,16 @@ class _AiChatSheet extends HookWidget {
               ),
               // ── Header ──
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: Row(
                   children: [
                     Icon(Icons.auto_awesome, size: 22, color: AppColors.accent),
                     const SizedBox(width: 8),
                     Text(
-                      isNewspaper ? 'ASK THE CORRESPONDENT' : 'Symmetry Oracle ✨',
+                      isNewspaper
+                          ? 'ASK THE CORRESPONDENT'
+                          : 'Symmetry Oracle ✨',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
                         fontFamily: isNewspaper ? 'Serif' : null,
@@ -451,7 +490,8 @@ class _AiChatSheet extends HookWidget {
                               fontFamily: isNewspaper ? 'Serif' : null,
                               fontStyle: isNewspaper ? FontStyle.italic : null,
                               color: isNewspaper
-                                  ? AppColors.newspaperTextPrimary.withOpacity(0.6)
+                                  ? AppColors.newspaperTextPrimary
+                                      .withOpacity(0.6)
                                   : Colors.grey,
                             ),
                           ),
@@ -461,11 +501,13 @@ class _AiChatSheet extends HookWidget {
 
                     return ListView.builder(
                       controller: scrollController,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       itemCount: messages.length + (isLoading ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (isLoading && index == messages.length) {
-                          return _buildTypingIndicator(isNewspaper, isDark, theme);
+                          return _buildTypingIndicator(
+                              isNewspaper, isDark, theme);
                         }
                         return _buildMessageBubble(
                           messages[index],
@@ -479,7 +521,8 @@ class _AiChatSheet extends HookWidget {
                 ),
               ),
               // ── Input Field ──
-              _buildInputBar(context, textController, sendMessage, isNewspaper, isDark, theme),
+              _buildInputBar(context, textController, sendMessage, isNewspaper,
+                  isDark, theme),
             ],
           ),
         ),
@@ -531,7 +574,9 @@ class _AiChatSheet extends HookWidget {
           style: theme.textTheme.bodyMedium?.copyWith(
             color: isUser
                 ? Colors.white
-                : (isNewspaper ? Colors.black87 : (isDark ? Colors.white : Colors.black87)),
+                : (isNewspaper
+                    ? Colors.black87
+                    : (isDark ? Colors.white : Colors.black87)),
             fontFamily: isNewspaper ? 'Serif' : null,
             height: 1.4,
           ),
@@ -549,7 +594,9 @@ class _AiChatSheet extends HookWidget {
         decoration: BoxDecoration(
           color: isNewspaper
               ? Colors.transparent
-              : (isDark ? Colors.white.withOpacity(0.08) : Colors.grey.shade100),
+              : (isDark
+                  ? Colors.white.withOpacity(0.08)
+                  : Colors.grey.shade100),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
@@ -564,7 +611,9 @@ class _AiChatSheet extends HookWidget {
             Icon(Icons.auto_awesome, size: 14, color: AppColors.accent),
             const SizedBox(width: 6),
             Text(
-              isNewspaper ? 'Consulting the archive...' : 'Oracle is thinking...',
+              isNewspaper
+                  ? 'Consulting the archive...'
+                  : 'Oracle is thinking...',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.accent,
                 fontStyle: FontStyle.italic,
@@ -598,7 +647,8 @@ class _AiChatSheet extends HookWidget {
             bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           ),
           decoration: BoxDecoration(
-            border: Border(top: BorderSide(color: theme.dividerColor, width: 0.5)),
+            border:
+                Border(top: BorderSide(color: theme.dividerColor, width: 0.5)),
           ),
           child: Row(
             children: [
@@ -611,7 +661,9 @@ class _AiChatSheet extends HookWidget {
                   textInputAction: TextInputAction.newline,
                   style: TextStyle(
                     fontFamily: isNewspaper ? 'Serif' : null,
-                    color: isNewspaper ? Colors.black87 : (isDark ? Colors.white : Colors.black87),
+                    color: isNewspaper
+                        ? Colors.black87
+                        : (isDark ? Colors.white : Colors.black87),
                   ),
                   decoration: InputDecoration(
                     hintText: isNewspaper
@@ -624,7 +676,9 @@ class _AiChatSheet extends HookWidget {
                     filled: true,
                     fillColor: isNewspaper
                         ? Colors.white
-                        : (isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100),
+                        : (isDark
+                            ? Colors.white.withOpacity(0.05)
+                            : Colors.grey.shade100),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(isNewspaper ? 4 : 24),
                       borderSide: isNewspaper
@@ -637,7 +691,8 @@ class _AiChatSheet extends HookWidget {
                           ? BorderSide(color: theme.dividerColor)
                           : BorderSide.none,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
                   ),
                 ),
               ),
