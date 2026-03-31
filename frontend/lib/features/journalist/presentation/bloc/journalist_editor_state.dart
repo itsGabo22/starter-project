@@ -33,3 +33,15 @@ class JournalistEditorSuccess extends JournalistEditorState {
 class JournalistEditorError extends JournalistEditorState {
   const JournalistEditorError(Exception error) : super(error: error);
 }
+
+class JournalistEditorEnhancingText extends JournalistEditorState {
+  const JournalistEditorEnhancingText();
+}
+
+class JournalistEditorTextEnhanced extends JournalistEditorState {
+  final String enhancedText;
+  const JournalistEditorTextEnhanced(this.enhancedText);
+
+  @override
+  List<Object?> get props => [enhancedText];
+}

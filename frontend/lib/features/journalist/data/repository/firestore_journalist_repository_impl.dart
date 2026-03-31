@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../domain/entities/journalist_article.dart';
 import '../../domain/repository/journalist_repository.dart';
+import '../../domain/enums/ai_editor_tone.dart';
 import '../data_sources/firestore_journalist_data_source.dart';
 import '../data_sources/gemini_remote_data_source.dart';
 
@@ -52,6 +53,20 @@ class FirestoreJournalistRepositoryImpl implements JournalistRepository {
     } catch (e) {
       return DataFailed(DioException(
         requestOptions: RequestOptions(path: 'gemini_generateAiMetadata'),
+        error: e,
+        message: e.toString(),
+      ));
+    }
+  }
+
+  @override
+  Future<DataState<String>> enhanceText(String text, AiEditorTone tone) async {
+    try {
+      final enhancedText = await _geminiDataSource.enhanceText(text, tone.promptValue);
+      return DataSuccess(enhancedText);
+    } catch (e) {
+      return DataFailed(DioException(
+        requestOptions: RequestOptions(path: 'gemini_enhanceText'),
         error: e,
         message: e.toString(),
       ));

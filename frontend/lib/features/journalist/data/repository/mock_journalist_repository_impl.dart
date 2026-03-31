@@ -2,6 +2,7 @@ import 'dart:async';
 import '../../../../core/resources/data_state.dart';
 import '../../domain/entities/journalist_article.dart';
 import '../../domain/repository/journalist_repository.dart';
+import '../../domain/enums/ai_editor_tone.dart';
 import '../models/journalist_article_model.dart';
 
 class MockJournalistRepositoryImpl implements JournalistRepository {
@@ -72,5 +73,11 @@ class MockJournalistRepositoryImpl implements JournalistRepository {
       'tags': ['Mock', 'AI', 'Innovation'],
       'estimatedReadTime': 3.5,
     });
+  }
+
+  @override
+  Future<DataState<String>> enhanceText(String text, AiEditorTone tone) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return DataSuccess('This is professionally mock-enhanced text applied with tone: ${tone.name}. Previous text was: $text');
   }
 }

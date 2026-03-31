@@ -5,6 +5,7 @@ import 'package:news_app_clean_architecture/features/journalist/domain/repositor
 import 'package:news_app_clean_architecture/features/journalist/domain/use_cases/get_articles_usecase.dart';
 import 'package:news_app_clean_architecture/features/journalist/presentation/bloc/journalist_articles_cubit.dart';
 import 'package:news_app_clean_architecture/features/journalist/presentation/bloc/journalist_articles_state.dart';
+import 'package:news_app_clean_architecture/features/journalist/domain/enums/ai_editor_tone.dart';
 
 class MockJournalistRepository implements JournalistRepository {
   @override
@@ -21,7 +22,13 @@ class MockJournalistRepository implements JournalistRepository {
   Future<DataState<void>> saveArticle(JournalistArticleEntity article) async {
     return const DataSuccess(null);
   }
+
+  @override
+  Future<DataState<String>> enhanceText(String text, AiEditorTone tone) async {
+    return DataSuccess('Enhanced: $text');
+  }
 }
+
 
 void main() {
   group('JournalistArticlesCubit', () {

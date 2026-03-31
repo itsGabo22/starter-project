@@ -5,6 +5,7 @@ import '../../../../core/constants/secrets.dart';
 abstract class GeminiRemoteDataSource {
   Future<Map<String, dynamic>> generateAiMetadata(String content);
   Future<String> getChatResponse(String prompt);
+  Future<String> enhanceText(String text, String tonePrompt);
 }
 
 class GeminiRemoteDataSourceImpl implements GeminiRemoteDataSource {
@@ -72,6 +73,34 @@ class GeminiRemoteDataSourceImpl implements GeminiRemoteDataSource {
           .trim();
     } else {
       throw Exception('Symmetry Oracle failed. Status: ${response.statusCode}');
+    }
+  }
+
+  @override
+  Future<String> enhanceText(String text, String tonePrompt) async {
+    final prompt = 
+        "You are an elite journalist editor. Apply this tone/action: $tonePrompt to the following text. "
+        "CRITICAL RULE: Return ONLY the rewritten text. No greetings, no markdown blocks, no quotes, no explanations. "
+        "Text: $text";
+
+    final response = await _dio.post(
+      '$_baseUrl?key=$GEMINI_API_KEY',
+      data: {
+        "contents": [
+          {
+            "parts": [
+              {"text": prompt}
+            ]
+          }
+        ]
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final rawText = response.data['candidates'][0]['content']['parts'][0]['text'] as String;
+      return rawText.replaceAll('```', '').trim();
+    } else {
+      throw Exception('Failed to enhance text. Status code: ${response.statusCode}');
     }
   }
 }

@@ -20,6 +20,7 @@ import 'features/journalist/domain/repository/journalist_repository.dart';
 import 'features/journalist/domain/use_cases/generate_ai_metadata_usecase.dart';
 import 'features/journalist/domain/use_cases/get_articles_usecase.dart';
 import 'features/journalist/domain/use_cases/save_article_usecase.dart';
+import 'features/journalist/domain/use_cases/enhance_journalist_text_usecase.dart';
 import 'features/journalist/presentation/bloc/journalist_articles_cubit.dart';
 import 'features/journalist/presentation/bloc/journalist_editor_cubit.dart';
 
@@ -94,6 +95,9 @@ Future<void> initializeDependencies() async {
       GenerateAiMetadataUseCase(sl())
   );
 
+  sl.registerSingleton<EnhanceJournalistTextUseCase>(
+      EnhanceJournalistTextUseCase(sl())
+  );
 
   //Blocs
   sl.registerFactory<RemoteArticlesBloc>(
@@ -109,7 +113,7 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerFactory<JournalistEditorCubit>(
-      () => JournalistEditorCubit(sl(), sl())
+      () => JournalistEditorCubit(sl(), sl(), sl())
   );
 
   // ── AI Chat Feature ────────────────────────────────────────────────────────
