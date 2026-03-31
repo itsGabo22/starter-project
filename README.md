@@ -47,14 +47,8 @@ To experience the project in its full stable state, follow these steps:
 
 ---
 
-[Old Instructions listed below...](#original-instructions)
-
-<a name="original-instructions"></a>
-[Original Instructions listed below...]
-
-
-Now, let us start with the instructions...
-*You can follow the instructions specified or you can give more than what we expect from you (which will make it much more likely for us to hire you)*
+<details>
+<summary>📂 View Original Symmetry Assignment Instructions</summary>
 
 # Instructions for getting started
 First, you will need to install and understand the technologies that this project uses.
@@ -181,7 +175,7 @@ Do you want to show that you want this to improve and not stay the same? This is
 You can repeat the steps 1,2, and 3 with any other functionality you might want to add or you can also suggest Schemas/technologies/frontend designs to tell us how you would personally improve the app and workflow of the app if you had time.
 This is only extra so it's fine if you don't want to do it.
 
-
+</details>
 
 # Index
 This index contains all the links to the project's documentation.

@@ -10,66 +10,59 @@ Stepping into the Applicant Showcase App project as a 5th-semester software engi
 ### 2. Learning Journey
 Before this project, my exposure to certain advanced architectural patterns was limited. I had to rapidly familiarize myself with the unidirectional data flow of Flutter BLoC, the strict layer isolation of Clean Architecture, and the nuances of NoSQL databases. 
 
-The concept that demanded the most intense study was the **Separation of Concerns**. I researched how to keep the Presentation Layer completely agnostic of the business logic. I applied this knowledge by utilizing Dependency Injection, ensuring that my UI components (Cubits/BLoCs) only interacted with abstract `UseCases` rather than concrete data repositories. Furthermore, designing a scalable NoSQL document schema in Firestore taught me how to structure data flexibly while maintaining integrity through granular security rules.
+The concept that demanded the most intense study was the **Separation of Concerns**. I applied this knowledge by utilizing Dependency Injection, ensuring that my UI components (Cubits/BLoCs) only interacted with abstract `UseCases`. During the final phases, I also learned the intricacies of **Prompt Engineering and REST API integration (Dio)**, successfully connecting Google's Gemini LLM while keeping the AI logic cleanly isolated in the Data Layer without relying on heavy external SDKs.
 
 ### 3. Challenges Faced
-The most significant obstacle I encountered was a severe framework conflict—a "Dependency Hell" involving version mismatches between code generators (`retrofit_generator` and `floor_generator`) and Dart 3 macros. 
+The most significant obstacle I encountered was a severe framework conflict—a "Dependency Hell" involving version mismatches between code generators (`retrofit_generator` and `floor_generator`) and Dart 3 macros. Taking *Total Accountability* for the product's stability, I overcame this by diving deep into SDK constraints and executing tactical "emergency surgery" on the generated `.g.dart` files. 
 
-This was a complex issue where even AI assistants struggled to provide a complete fix. Taking *Total Accountability* for the product's stability, I overcame this by diving deep into SDK constraints and executing tactical "emergency surgery" on the generated `.g.dart` files. I manually implemented a `fallbackToDestructiveMigration` to upgrade the SQLite database and applied a Unique Index on the `url` field to resolve constraint crashes. 
-
-Additionally, I faced challenges with UI stability during network or emulator failures. I resolved this by enforcing Defensive Programming within the BLoC layer—wrapping repository calls in `try-catch` blocks to emit safe, empty states rather than leaving the user trapped in an infinite loading spinner.
+During the AI implementation, I faced a "Chat Amnesia" bug where the AI chat history would wipe upon closing the BottomSheet. I solved this by strategically lifting the BLoC state (`AiChatBloc`) up to the Page level using `BlocProvider.value`, ensuring persistent conversational memory. Additionally, I resolved a deprecated endpoint error (404) by migrating the network calls to the highly efficient `gemini-1.5-flash` model.
 
 ### 4. Reflection and Future Directions
-Technically, this project elevated my understanding of Data Orchestration and Domain Purity. Professionally, it shifted my mindset from a student completing an assignment to a Junior Product Engineer taking ownership of user experience and data integrity. 
+Technically, this project elevated my understanding of Data Orchestration, Domain Purity, and AI integration. Professionally, it shifted my mindset from a student completing an assignment to a Junior Product Engineer taking ownership of user experience and data integrity. 
 
-Looking forward, the natural evolution of this project is bringing Artificial Intelligence directly into the article consumption ecosystem. My primary suggestion for future improvement is to fully materialize the "Ask AI" feature (Phase 5), transitioning it from a static UI teaser into a Context-Aware Intelligence Engine where an LLM is strictly grounded by the article's text to answer user queries.
+Looking forward, the natural evolution of this project is moving the "Bimodular AI" logic into the backend. My primary suggestion for future scaling is migrating the `GeminiRemoteDataSource` calls into **Firebase Cloud Functions** (Node.js/Python). This will centralize the System Prompts, securely hide the API Keys from the client side, and allow for robust Rate Limiting and Token Management for millions of users.
 
 ### 5. Proof of the Project
-*(Note for the reviewer: Click the links below to view the application in action).*
+*(Note for the reviewer: Click the links below to view the application in action. The video now includes the Symmetry Oracle and Pro Editor AI features).*
 
-* **[Link to Video Demo: Full App Walkthrough & Emulators](https://youtu.be/eja1YGtUgh8)**
+* **[Link to Video Demo: Full App Sustentation, Emulators & AI Features](https://youtu.be/ksl1SKPFxgw)**
 * **Screenshot 1:** Dark Mode Feed
- * ![WhatsApp Image 2026-03-30 at 5 01 37 PM](https://github.com/user-attachments/assets/39767f50-b669-4618-82b8-6ec90ed29529)
-
+  * ![Dark Mode](assets/DarkMode.jpeg)
 * **Screenshot 2:** Newspaper Mode Feed
-* <img width="469" height="882" alt="Captura de pantalla 2026-03-30 165842" src="https://github.com/user-attachments/assets/49c8e87e-24ee-4383-9475-c0200e3d6fdb" />
-* **Screenshot 3:** Article Detail & Ask AI
-*  ![WhatsApp Image 2026-03-30 at 5 03 43 PM](https://github.com/user-attachments/assets/affc6255-c252-4337-b864-b8994afbc0df)
-
-* **Screenshot 4:** Saved Articles & UI Stability
-* ![WhatsApp Image 2026-03-30 at 5 04 57 PM](https://github.com/user-attachments/assets/08822dbc-9735-48f5-8d9d-407c99f0e0ee)
+  * ![Newspaper Mode](assets/NewspaperMode.jpeg)
+* **Screenshot 3:** The Symmetry Oracle (Ask AI)
+  * ![Oracle Chat](assets/SymmetryOracleAI.jpeg)
+* **Screenshot 4:** Symmetry Pro Editor (AI Action Chips)
+  * ![Editor AI](assets/SymmetryJournalistAIMode.jpeg)
 
 ### 6. Overdelivery
-To embody the core value to *Maximally Overdeliver*, I implemented several enhancements that push the application beyond the initial requirements:
+To embody the core value to *Maximally Overdeliver*, I pushed the application beyond the initial requirements, categorizing my enhancements into two main pillars:
 
-#### 1. New Features Implemented:
-* **The Newspaper Mode (Generational UX):** To solve the UI paradox of designing for a 90-year-old grandmother and an 18-year-old NPC, I created a highly accessible, dynamic theme. The Newspaper Mode uses strict Serif typography on a cream background. Most importantly, I applied a grayscale matrix filter to the images in the main feed to reduce cognitive load and emulate the broadsheet legacy. Believing that *Truth is King*, I defended this design choice to ensure aesthetic coherence and immersion, while deliberately preserving original image colors inside the Article Detail View.
-* **Unified Feed via Data Orchestration:** Instead of isolating the NewsAPI and Firebase feeds, I built a `GetUnifiedArticlesUseCase`. It fetches both data streams, merges them, maps them to a single domain entity, and sorts them chronologically. This keeps Domain Purity intact without contaminating the UI with raw data structures.
-* **Symmetry Exclusive Tagging:** I added an `isExclusive` boolean field to the Firestore schema. This visually highlights internal journalist articles with a "SYMMETRY EXCLUSIVE ⚡" badge, establishing a premium content tier.
-* **Pro Editor & Global Dark Mode:** Added a real-time image preview, live word counter, shimmer loading effects, and fluid 60fps staggered animations for list rendering.
+#### Pillar 1: Core Product & UX Engineering
+* **The Newspaper Mode (Generational UX):** To solve the UI paradox of designing for a 90-year-old grandmother and an 18-year-old NPC, I created a highly accessible, dynamic theme. The Newspaper Mode uses strict Serif typography and applies a grayscale matrix filter to the images in the main feed to reduce cognitive load and emulate the broadsheet legacy, without losing the modern feel.
+* **Unified Feed via Data Orchestration:** Instead of isolating the external NewsAPI and the internal Firebase feeds, I built a `GetUnifiedArticlesUseCase`. It fetches both data streams, merges them, maps them to a single domain entity, and sorts them chronologically for a seamless scrolling experience.
+* **Symmetry Exclusive Tagging & Core Editor:** I added an `isExclusive` boolean field to the Firestore schema, visually highlighting internal journalist articles with a "SYMMETRY EXCLUSIVE ⚡" badge. Additionally, the pro editor includes live word counters, shimmer loading effects, and fluid 60fps staggered animations.
 
-#### 2. Prototypes Created:
-* **"Ask AI" Interface Prototype:** I designed a functional UI prototype for a contextual AI assistant. It includes a responsive Bottom Sheet integrated into the Article Detail view, setting the visual stage for interactive LLM integration.
-* **Phase 4 & 5 Roadmap:** I documented the technical scaling blueprint in `docs/future_architecture/roadmap.md`, outlining the architectural implementation for Context-Aware AI, a Native Media Engine (Firebase Storage), and Global Vector Search (Algolia/ElasticSearch).
+#### Pillar 2: The Bimodular AI Ecosystem
+* **Phase 5 - The Symmetry Oracle (Consumer AI):** I built a fully functional, context-aware AI assistant integrated into the Article Detail View. Using a strict "Truth is King" Grounding Protocol, the Oracle answers questions, translates, and summarizes *only* using the article's text, politely declining out-of-scope questions to prevent hallucinations.
+* **Phase 6 - Symmetry Pro Editor (Creator AI):** I implemented "Samsung Galaxy AI" style inline text-editing superpowers for the Journalist. By utilizing interactive Action Chips (`[✨ Polish]`, `[👔 Professional]`, `[🔥 Engaging]`), the editor dynamically rewrites the journalist's text in-place using programmatic `TextEditingController` manipulation, ensuring the cursor remains perfectly positioned for a seamless writing experience.
 
-#### 3. How Can You Improve This:
-The immediate next step for the Overdelivery section is the backend execution of the AI Prototype (Phase 5). This involves connecting the `google_generative_ai` package, injecting the specific article's content as a "System Instruction" to prevent hallucinations, and streaming the response back to the BLoC to create a real-time, interactive reading experience. 
+#### Prototypes Created:
+* **System Context Diagram (Cross-Platform Vision):** I designed a C4 Context Diagram in UML to prototype the future transition into a fully unified cross-platform ecosystem where the Flutter Client securely interacts with a Firebase Backend.
+  * ![Context Diagram](assets/Context_Diagram.drawio.png)
+* **Domain Class Diagram (AI Provider Agnostic):** To prepare for future LLM iterations, I created a UML Class Diagram prototyping an `AiProviderStrategy` pattern, ensuring the app is not hardcoupled to a single AI provider.
+  * ![Class Diagram](assets/Class_Diagram_UML.drawio.png)
+* **Engineering Scalability Roadmap:** I drafted a strategic engineering roadmap to detail how the "Bimodular AI" features and Cross-Platform targets will be orchestrated in Phase 7 and beyond.
+  * [🚀 View the Comprehensive Project Roadmap](../frontend/docs/future_architecture/roadmap.md)
 
-### 7. Extra Sections
-#### Code Snippet: Defensive BLoC Architecture & UI Stability
-To ensure the app never hangs on a loading state due to database conflicts, the state management was fortified with explicit error handling during Phase 4:
+#### How Can You Improve This:
+While the current features demonstrate rapid prototyping capabilities, the next evolution requires decoupling the AI business logic from the Flutter frontend and moving it to a **Firebase Cloud Functions Microservice** architecture. Additionally, integrating a vector database (like Algolia or ElasticSearch) would transform the static news feed into a semantics-searchable global intelligence platform.
 
-```dart
-// Snippet demonstrating defensive state emission to prevent infinite loading spinners
-Future<void> _onGetSavedArticles(GetSavedArticles event, Emitter<LocalArticleState> emit) async {
-  try {
-    emit(const LocalArticlesLoading());
-    final articles = await getSavedArticlesUseCase();
-    emit(LocalArticlesDone(articles));
-  } catch (e) {
-    // Intercepts unhandled exceptions (e.g., SQLite migration failures, network drops)
-    // Ensures the UI gracefully transitions to an error state rather than crashing.
-    emit(const LocalArticlesError(message: "Unable to load saved articles at this time."));
-  }
-}
-```
+### 7. Architectural Trade-offs & Environments
+To maintain transparency and align with Symmetry's *Truth is King* value, here are the technical trade-offs made during development:
+
+* **AI Orchestration (Frontend vs Backend):** For this 72-hour prototype, the Gemini LLM orchestration is handled in the client's Data Layer (`GeminiRemoteDataSource`). This bypasses the need for a paid Firebase Blaze plan (required for Cloud Functions). In production, this must be migrated to the backend to protect API secrets.
+* **Supported Environments:** This project has been heavily tested and optimized for **Windows Desktop** and Android Emulators. 
+  * *Mobile:* Native Firebase configuration files (`google-services.json`) are excluded from Git for security. Reviewers must provide their own credentials to compile for native mobile.
+  * *Web:* Running on Flutter Web is not recommended for this review due to strict browser CORS policies that will block the external REST API calls to the AI models. 
+  * *Recommendation:* Please evaluate the app using `flutter run -d windows` (or macOS/Linux desktop) for the most stable and intended experience.
