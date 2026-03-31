@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:news_app_clean_architecture/config/theme/app_themes.dart';
 import '../../../../injection_container.dart';
 import '../../domain/entities/journalist_article.dart';
+import '../../domain/enums/ai_editor_tone.dart';
 import '../bloc/journalist_editor_cubit.dart';
 import '../bloc/journalist_editor_state.dart';
 
@@ -24,6 +25,7 @@ class _JournalistEditorPageState extends State<JournalistEditorPage> {
   late TextEditingController _imageUrlController;
   List<String> _tags = [];
   String? _aiSummary;
+  String? _originalTextBeforeEnhancement;
   String _status = 'draft';
   bool _showWordCount = false;
 
@@ -103,6 +105,16 @@ class _JournalistEditorPageState extends State<JournalistEditorPage> {
                     borderRadius: BorderRadius.circular(12)),
               ),
             );
+          }
+          if (state is JournalistEditorTextEnhanced) {
+            setState(() {
+              _contentController.text = state.enhancedText;
+              // Maintain UX: Put cursor at the end of the new text
+              _contentController.selection = TextSelection.collapsed(
+                offset: state.enhancedText.length,
+              );
+            });
+            // Haptic feedback could go here if we had the package
           }
         },
         child: Scaffold(
@@ -271,6 +283,7 @@ class _JournalistEditorPageState extends State<JournalistEditorPage> {
           maxLines: null,
         ),
         Divider(color: theme.dividerColor),
+        _buildEnhanceToolbar(theme),
         TextField(
           controller: _contentController,
           style: theme.textTheme.bodyLarge,
@@ -287,6 +300,84 @@ class _JournalistEditorPageState extends State<JournalistEditorPage> {
         ),
       ],
     );
+  }
+
+  Widget _buildEnhanceToolbar(ThemeData theme) {
+    return BlocBuilder<JournalistEditorCubit, JournalistEditorState>(
+      builder: (context, state) {
+        final isEnhancing = state is JournalistEditorEnhancingText;
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Row(
+            children: [
+              if (isEnhancing)
+                const Padding(
+                  padding: EdgeInsets.only(right: 12, left: 4),
+                  child: SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+              if (_originalTextBeforeEnhancement != null && !isEnhancing)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ActionChip(
+                    avatar: const Icon(Icons.undo, size: 14, color: Colors.white),
+                    label: const Text('Undo', style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
+                    backgroundColor: Colors.redAccent.withOpacity(0.8),
+                    side: BorderSide.none,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    onPressed: () {
+                      setState(() {
+                        _contentController.text = _originalTextBeforeEnhancement!;
+                        _contentController.selection = TextSelection.collapsed(
+                          offset: _originalTextBeforeEnhancement!.length,
+                        );
+                        _originalTextBeforeEnhancement = null;
+                      });
+                    },
+                  ),
+                ),
+              ...AiEditorTone.values.map((tone) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ActionChip(
+                    label: Text(tone.uiLabel, style: const TextStyle(fontSize: 12)),
+                    backgroundColor: theme.brightness == Brightness.dark 
+                        ? Colors.white.withOpacity(0.06) 
+                        : Colors.grey.withOpacity(0.1),
+                    side: BorderSide.none,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    onPressed: isEnhancing ? null : () => _onEnhanceTextTapped(context, tone),
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _onEnhanceTextTapped(BuildContext context, AiEditorTone tone) {
+    if (_contentController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Write some text to enhance first!'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+      return;
+    }
+    setState(() {
+      _originalTextBeforeEnhancement = _contentController.text;
+    });
+    context.read<JournalistEditorCubit>().enhanceText(_contentController.text, tone);
   }
 
   Widget _buildAiEnhancementsSection(ThemeData theme) {
