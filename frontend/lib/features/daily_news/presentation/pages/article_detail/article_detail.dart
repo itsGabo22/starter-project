@@ -200,9 +200,15 @@ class ArticleDetailsView extends HookWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(isNewspaper ? 12 : 30),
             gradient: isNewspaper ? null : AppColors.fabGradient,
-            color: isNewspaper ? const Color.fromARGB(227, 255, 0, 0) : null,
+            color: isNewspaper ? const Color(0xFFB71C1C) : null,
             boxShadow: isNewspaper
-                ? null
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFFB71C1C).withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
                 : [
                     BoxShadow(
                       color: AppColors.accent.withOpacity(0.4),
