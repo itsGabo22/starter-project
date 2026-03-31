@@ -25,6 +25,12 @@ import 'features/journalist/presentation/bloc/journalist_editor_cubit.dart';
 
 import 'features/daily_news/domain/usecases/get_unified_articles.dart';
 
+// AI Chat Feature
+import 'features/daily_news/data/repository/ai_chat_repository_impl.dart';
+import 'features/daily_news/domain/repository/ai_chat_repository.dart';
+import 'features/daily_news/domain/usecases/get_ai_chat_response.dart';
+import 'features/daily_news/presentation/bloc/ai_chat/ai_chat_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
@@ -106,5 +112,17 @@ Future<void> initializeDependencies() async {
       () => JournalistEditorCubit(sl(), sl())
   );
 
+  // ── AI Chat Feature ────────────────────────────────────────────────────────
+  sl.registerSingleton<AiChatRepository>(
+    AiChatRepositoryImpl(sl())
+  );
+
+  sl.registerSingleton<GetAiChatResponse>(
+    GetAiChatResponse(sl())
+  );
+
+  sl.registerFactory<AiChatBloc>(
+    () => AiChatBloc(sl())
+  );
 
 }
